@@ -34,6 +34,11 @@ jobs:
       - name: Build Web
         run: jaspr build
 
+      - name: Set GitHub Pages base path
+        run: |
+          repo_name="${GITHUB_REPOSITORY#*/}"
+          sed -i "s#<base href=\"/\"/>#<base href=\"/${repo_name}/\"/>#" build/jaspr/index.html
+
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
