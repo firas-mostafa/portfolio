@@ -32,7 +32,7 @@ jobs:
         run: dart pub get
 
       - name: Build Web
-        run: jaspr build --base-href /portfolio/
+        run: jaspr build
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
