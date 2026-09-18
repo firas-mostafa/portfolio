@@ -1,0 +1,30 @@
+name: Deploy Jaspr Site
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: dart-lang/setup-dart@v1
+
+      - name: Install Jaspr CLI
+        run: dart pub global activate jaspr_cli
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Build Web
+        run: jaspr build
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: 'build/jaspr'
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
