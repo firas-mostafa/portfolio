@@ -1,0 +1,263 @@
+import 'package:jaspr/jaspr.dart';
+import 'package:jaspr/dom.dart';
+import '../constants/content.dart';
+
+class ProjectsSection extends StatelessComponent {
+  const ProjectsSection({super.key});
+
+  @override
+  Component build(BuildContext context) {
+    return section(id: 'projects', classes: 'projects-container', [
+      span(classes: 'section-label', [Component.text('Selected Work // 03')]),
+      h2(classes: 'section-title', [
+        strong([Component.text('SELECTED')]),
+        Component.text(' WORKS'),
+      ]),
+      div(classes: 'projects-list', [
+        for (final p in projects) _projectSnapRow(p),
+      ]),
+    ]);
+  }
+
+  Component _projectSnapRow(Project proj) {
+    final hasGallery = proj.gallery.isNotEmpty;
+
+    return div(classes: 'project-snap-card', [
+      div(classes: 'project-row', [
+        // Text column
+        div(classes: 'project-info', [
+          span(classes: 'project-index', [Component.text(proj.index)]),
+          h3(classes: 'project-name', [Component.text(proj.name)]),
+          p(classes: 'project-desc', [Component.text(proj.desc)]),
+          div(classes: 'project-tech', [
+            for (final t in proj.tech) span(classes: 'tech-chip', [Component.text(t)]),
+          ]),
+          if (proj.link != null)
+            a(href: proj.link!, target: Target.blank, classes: 'project-link', [
+              Component.text('View on GitHub →'),
+            ]),
+        ]),
+        // Media column (larger phone frame with Carousel or Video)
+        div(classes: 'project-media', [
+          div(classes: 'phone-frame', [
+            if (proj.isVideo)
+              video(
+                classes: 'phone-media video-fit',
+                src: proj.media,
+                autoplay: true,
+                loop: true,
+                muted: true,
+                attributes: {'playsinline': '', 'controls': 'false'},
+                [],
+              )
+            else if (hasGallery)
+              _buildGalleryCarousel(proj)
+            else if (proj.media.isNotEmpty)
+              img(classes: 'phone-media image-fit', src: proj.media, alt: '${proj.name} preview')
+            else
+              div(classes: 'phone-placeholder', [Component.text(proj.name)])
+          ]),
+        ]),
+      ]),
+    ]);
+  }
+
+  Component _buildGalleryCarousel(Project proj) {
+    final carouselId = 'carousel-${proj.index}';
+    return div(
+      id: carouselId,
+      classes: 'carousel-container',
+      attributes: {'data-count': '${proj.gallery.length}'},
+      [
+        div(classes: 'carousel-slides', [
+          for (var i = 0; i < proj.gallery.length; i++)
+            img(
+              classes: 'carousel-slide ${i == 0 ? 'active' : ''}',
+              src: proj.gallery[i],
+              alt: '${proj.name} slide ${i + 1}',
+            )
+        ]),
+        div(classes: 'carousel-indicators', [
+          for (var i = 0; i < proj.gallery.length; i++)
+            span(classes: 'dot ${i == 0 ? 'active' : ''}', []),
+        ]),
+      ],
+    );
+  }
+
+  @css
+  static List<StyleRule> get styles => [
+        css('.projects-container').styles(
+          padding: Padding.zero,
+          raw: {'scroll-snap-type': 'y mandatory'},
+        ),
+        css('.projects-list').styles(
+          display: Display.flex,
+          flexDirection: FlexDirection.column,
+          gap: Gap.all(40.px),
+        ),
+        css('.project-snap-card').styles(
+          minHeight: 100.vh,
+          display: Display.flex,
+          alignItems: AlignItems.center,
+          justifyContent: JustifyContent.center,
+          padding: Padding.symmetric(horizontal: 24.px, vertical: 40.px),
+          raw: {
+            'scroll-snap-align': 'start',
+            'scroll-snap-stop': 'always',
+            'box-sizing': 'border-box',
+          },
+        ),
+        css('.project-row').styles(
+          display: Display.flex,
+          flexDirection: FlexDirection.column,
+          gap: Gap.all(40.px),
+          alignItems: AlignItems.center,
+          width: 100.percent,
+          maxWidth: 1100.px,
+        ),
+        css('.project-index').styles(
+          fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+          fontSize: 14.px,
+          color: const Color('rgba(255,255,255,0.4)'),
+          display: Display.block,
+          margin: Margin.only(bottom: 12.px),
+        ),
+        css('.project-name').styles(
+          fontFamily: const FontFamily.list([FontFamily('Montserrat'), FontFamilies.sansSerif]),
+          fontWeight: FontWeight.w800,
+          fontSize: 36.px,
+          letterSpacing: (-1).px,
+          margin: Margin.zero,
+          color: Colors.white,
+        ),
+        css('.project-desc').styles(
+          fontSize: 15.px,
+          fontWeight: FontWeight.w300,
+          lineHeight: 1.6.em,
+          color: const Color('rgba(255,255,255,0.6)'),
+          margin: Margin.only(top: 16.px, bottom: 20.px),
+          maxWidth: 520.px,
+        ),
+        css('.project-tech').styles(
+          display: Display.flex,
+          flexWrap: FlexWrap.wrap,
+          gap: Gap.all(8.px),
+        ),
+        css('.tech-chip').styles(
+          fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+          fontSize: 11.px,
+          padding: Padding.symmetric(horizontal: 12.px, vertical: 6.px),
+          border: Border.all(color: const Color('rgba(255,255,255,0.2)'), width: 1.px, style: BorderStyle.solid),
+          color: const Color('rgba(255,255,255,0.85)'),
+          raw: {'border-radius': '999px', 'background': 'rgba(255,255,255,0.03)'},
+        ),
+        css('.project-link').styles(
+          display: Display.inlineBlock,
+          margin: Margin.only(top: 24.px),
+          fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+          fontSize: 13.px,
+          color: Colors.white,
+          textDecoration: const TextDecoration(line: TextDecorationLine.underline),
+        ),
+        // Enlarged Phone frame
+        css('.phone-frame').styles(
+          width: 310.px,
+          height: 620.px,
+          padding: Padding.all(12.px),
+          border: Border.all(color: const Color('rgba(255,255,255,0.25)'), width: 2.px, style: BorderStyle.solid),
+          backgroundColor: const Color('#080808'),
+          raw: {
+            'border-radius': '44px',
+            'transition': 'all .4s ease',
+            'box-shadow': '0 20px 50px rgba(0,0,0,0.6)',
+            'position': 'relative',
+            'overflow': 'hidden',
+          },
+        ),
+        css('.phone-frame:hover').styles(
+          border: Border.all(color: Colors.white, width: 2.px, style: BorderStyle.solid),
+          raw: {'transform': 'scale(1.02)'},
+        ),
+        css('.phone-media').styles(
+          width: 100.percent,
+          height: 100.percent,
+          raw: {'border-radius': '32px', 'background': '#000'},
+        ),
+        css('.video-fit').styles(
+          raw: {'object-fit': 'contain'},
+        ),
+        css('.image-fit').styles(
+          raw: {'object-fit': 'contain'},
+        ),
+        // Carousel styling
+        css('.carousel-container').styles(
+          width: 100.percent,
+          height: 100.percent,
+          position: Position.relative(),
+          raw: {'border-radius': '32px', 'overflow': 'hidden', 'background': '#000'},
+        ),
+        css('.carousel-slides').styles(
+          width: 100.percent,
+          height: 100.percent,
+          position: Position.relative(),
+        ),
+        css('.carousel-slide').styles(
+          width: 100.percent,
+          height: 100.percent,
+          position: Position.absolute(top: Unit.zero, left: Unit.zero),
+          opacity: 0,
+          raw: {
+            'object-fit': 'contain',
+            'transition': 'opacity 0.8s ease-in-out',
+          },
+        ),
+        css('.carousel-slide.active').styles(opacity: 1),
+        css('.carousel-indicators').styles(
+          position: Position.absolute(bottom: 12.px, left: Unit.zero, right: Unit.zero),
+          display: Display.flex,
+          justifyContent: JustifyContent.center,
+          gap: Gap.all(6.px),
+          zIndex: ZIndex(5),
+        ),
+        css('.carousel-indicators .dot').styles(
+          width: 6.px,
+          height: 6.px,
+          backgroundColor: const Color('rgba(255,255,255,0.3)'),
+          raw: {'border-radius': '50%', 'transition': 'all 0.3s ease'},
+        ),
+        css('.carousel-indicators .dot.active').styles(
+          width: 18.px,
+          backgroundColor: Colors.white,
+          raw: {'border-radius': '10px'},
+        ),
+        // Phone Placeholder
+        css('.phone-placeholder').styles(
+          width: 100.percent,
+          height: 100.percent,
+          display: Display.flex,
+          alignItems: AlignItems.center,
+          justifyContent: JustifyContent.center,
+          backgroundColor: const Color('#1a1a1a'),
+          color: const Color('rgba(255,255,255,0.4)'),
+          fontFamily: const FontFamily.list([FontFamily('Montserrat'), FontFamilies.sansSerif]),
+          fontWeight: FontWeight.w700,
+          raw: {'border-radius': '32px'},
+        ),
+        // Responsive Desktop layout
+        css.media(MediaQuery.screen(minWidth: 768.px), [
+          css('.project-snap-card').styles(
+            padding: Padding.only(left: 240.px, right: 120.px),
+          ),
+          css('.project-row').styles(
+            flexDirection: FlexDirection.row,
+            gap: Gap.all(80.px),
+            justifyContent: JustifyContent.spaceBetween,
+          ),
+          css('.project-row:nth-child(even)').styles(raw: {'flex-direction': 'row-reverse'}),
+          css('.project-info').styles(flex: Flex(grow: 1)),
+          css('.project-name').styles(fontSize: 48.px),
+          css('.phone-frame').styles(width: 320.px, height: 640.px),
+        ]),
+      ];
+}
