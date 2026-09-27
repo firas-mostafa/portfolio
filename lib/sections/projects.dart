@@ -108,8 +108,6 @@ class ProjectSection extends StatelessComponent {
           justifyContent: JustifyContent.center,
           padding: Padding.symmetric(horizontal: 24.px, vertical: 60.px),
           raw: {
-            'scroll-snap-align': 'start',
-            'scroll-snap-stop': 'always',
             'box-sizing': 'border-box',
           },
         ),
@@ -183,15 +181,16 @@ class ProjectSection extends StatelessComponent {
           raw: {'opacity': '0.7'},
         ),
         
-        // Phone frame - fixed aspect ratio 9:16
+        // Phone frame - responsive mobile default
         css('.phone-frame').styles(
-          width: 373.px,
-          height: 786.px,
-          padding: Padding.all(12.px),
+          width: 295.px,
+          height: 620.px,
+          padding: Padding.all(10.px),
           border: Border.all(color: const Color('rgba(255,255,255,0.25)'), width: 2.px, style: BorderStyle.solid),
           backgroundColor: const Color('#080808'),
           raw: {
-            'border-radius': '44px',
+            'max-width': '100%',
+            'border-radius': '38px',
             'transition': 'all .4s ease',
             'box-shadow': '0 20px 50px rgba(0,0,0,0.6)',
             'position': 'relative',
@@ -207,7 +206,7 @@ class ProjectSection extends StatelessComponent {
         css('.phone-media').styles(
           width: 100.percent,
           height: 100.percent,
-          raw: {'border-radius': '32px', 'background': '#000'},
+          raw: {'border-radius': '28px', 'background': '#000'},
         ),
         
         css('.video-fit').styles(
@@ -223,7 +222,7 @@ class ProjectSection extends StatelessComponent {
           width: 100.percent,
           height: 100.percent,
           position: Position.relative(),
-          raw: {'border-radius': '32px', 'overflow': 'hidden', 'background': '#000'},
+          raw: {'border-radius': '28px', 'overflow': 'hidden', 'background': '#000'},
         ),
         
         css('.carousel-slides').styles(
@@ -331,13 +330,17 @@ class ProjectSection extends StatelessComponent {
           color: const Color('rgba(255,255,255,0.4)'),
           fontFamily: const FontFamily.list([FontFamily('Montserrat'), FontFamilies.sansSerif]),
           fontWeight: FontWeight.w700,
-          raw: {'border-radius': '32px'},
+          raw: {'border-radius': '28px'},
         ),
         
         // Responsive Desktop layout
         css.media(MediaQuery.screen(minWidth: 768.px), [
           css('.project-section').styles(
             padding: Padding.only(left: 240.px, right: 120.px, top: 80.px, bottom: 80.px),
+            raw: {
+              'scroll-snap-align': 'start',
+              'scroll-snap-stop': 'always',
+            },
           ),
           
           css('.project-row').styles(
@@ -357,6 +360,20 @@ class ProjectSection extends StatelessComponent {
           css('.phone-frame').styles(
             width: 390.px,
             height: 822.px,
+            padding: Padding.all(12.px),
+            raw: {'border-radius': '44px'},
+          ),
+          
+          css('.phone-media').styles(
+            raw: {'border-radius': '32px'},
+          ),
+          
+          css('.carousel-container').styles(
+            raw: {'border-radius': '32px'},
+          ),
+
+          css('.phone-placeholder').styles(
+            raw: {'border-radius': '32px'},
           ),
           
           // Make project 02 (TasteCraft) reverse layout

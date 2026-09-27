@@ -40,8 +40,6 @@ class StackSection extends StatelessComponent {
           raw: {
             'margin-left': 'auto',
             'margin-right': 'auto',
-            'scroll-snap-align': 'start',
-            'scroll-snap-stop': 'always',
             'box-sizing': 'border-box',
           },
         ),
@@ -120,6 +118,12 @@ class StackSection extends StatelessComponent {
           margin: Margin.zero,
         ),
         css.media(MediaQuery.screen(minWidth: 768.px), [
+          css('.stack-section').styles(
+            raw: {
+              'scroll-snap-align': 'start',
+              'scroll-snap-stop': 'always',
+            },
+          ),
           css('.section-title').styles(fontSize: 42.px),
           css('.stack-grid').styles(raw: {'grid-template-columns': '1fr 1fr 1fr'}),
           css('.stack-card').styles(padding: Padding.all(40.px)),

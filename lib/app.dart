@@ -57,29 +57,37 @@ class App extends StatelessComponent {
           raw: {
             'position': 'relative',
             'z-index': '1',
-            'overflow-y': 'scroll',
-            'scroll-snap-type': 'y mandatory',
+            'overflow-y': 'auto',
             'scroll-behavior': 'smooth',
           },
         ),
         css('a').styles(color: Color.inherit, textDecoration: const TextDecoration(line: TextDecorationLine.none)),
-        // Section base for snap
+        // Section base
         css('section').styles(
           minHeight: 100.vh,
           padding: Padding.symmetric(horizontal: 24.px, vertical: 80.px),
           raw: {
             'position': 'relative',
-            'scroll-snap-align': 'start',
-            'scroll-snap-stop': 'always',
             'box-sizing': 'border-box',
             'display': 'flex',
             'flex-direction': 'column',
             'justify-content': 'center',
           },
         ),
-        // Responsive: desktop gets left gutter for the side-nav
+        // Responsive: desktop gets left gutter for side-nav and scroll-snap
         css.media(MediaQuery.screen(minWidth: 768.px), [
-          css('section').styles(padding: Padding.only(left: 240.px, right: 120.px, top: 80.px, bottom: 80.px)),
+          css('.snap-main').styles(
+            raw: {
+              'scroll-snap-type': 'y mandatory',
+            },
+          ),
+          css('section').styles(
+            padding: Padding.only(left: 240.px, right: 120.px, top: 80.px, bottom: 80.px),
+            raw: {
+              'scroll-snap-align': 'start',
+              'scroll-snap-stop': 'always',
+            },
+          ),
         ]),
       ];
 }

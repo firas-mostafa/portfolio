@@ -56,8 +56,6 @@ class ProjectsOverviewSection extends StatelessComponent {
           justifyContent: JustifyContent.center,
           padding: Padding.symmetric(horizontal: 24.px, vertical: 80.px),
           raw: {
-            'scroll-snap-align': 'start',
-            'scroll-snap-stop': 'always',
             'box-sizing': 'border-box',
           },
         ),
@@ -307,6 +305,10 @@ class ProjectsOverviewSection extends StatelessComponent {
         css.media(MediaQuery.screen(minWidth: 768.px), [
           css('.projects-overview').styles(
             padding: Padding.only(left: 240.px, right: 120.px, top: 80.px, bottom: 80.px),
+            raw: {
+              'scroll-snap-align': 'start',
+              'scroll-snap-stop': 'always',
+            },
           ),
           
           css('.projects-grid').styles(
