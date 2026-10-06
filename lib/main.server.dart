@@ -132,10 +132,8 @@ void main() {
 
       // Structured Data (JSON-LD)
       script(
-        type: 'application/ld+json',
-        [
-          Component.text(
-            '''
+        attributes: {'type': 'application/ld+json'},
+        content: '''
 {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -162,8 +160,6 @@ void main() {
   ]
 }
 ''',
-          ),
-        ],
       ),
     ],
     body: App(),
