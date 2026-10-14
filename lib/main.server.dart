@@ -52,6 +52,13 @@ void main() {
 
       link(rel: 'canonical', href: 'https://firas-mostafa.github.io/portfolio/'),
 
+      // Favicons / app icons (FM monogram). Relative hrefs resolve under the
+      // GitHub Pages base path.
+      link(rel: 'icon', href: 'favicon.ico', attributes: {'sizes': 'any'}),
+      link(rel: 'icon', href: 'images/favicon-32.png', attributes: {'type': 'image/png', 'sizes': '32x32'}),
+      link(rel: 'icon', href: 'images/favicon-192.png', attributes: {'type': 'image/png', 'sizes': '192x192'}),
+      link(rel: 'apple-touch-icon', href: 'images/apple-touch-icon.png', attributes: {'sizes': '180x180'}),
+
       // Open Graph Tags
       meta(attributes: {'property': 'og:type', 'content': 'website'}),
       meta(
@@ -84,9 +91,11 @@ void main() {
         attributes: {
           'property': 'og:image',
           'content':
-              'https://firas-mostafa.github.io/portfolio/images/ursa_logo.png',
+              'https://firas-mostafa.github.io/portfolio/images/og-image.png',
         },
       ),
+      meta(attributes: {'property': 'og:image:width', 'content': '1200'}),
+      meta(attributes: {'property': 'og:image:height', 'content': '630'}),
       meta(
         attributes: {
           'property': 'og:image:alt',
@@ -122,7 +131,7 @@ void main() {
         attributes: {
           'name': 'twitter:image',
           'content':
-              'https://firas-mostafa.github.io/portfolio/images/ursa_logo.png',
+              'https://firas-mostafa.github.io/portfolio/images/og-image.png',
         },
       ),
       meta(
@@ -155,7 +164,7 @@ void main() {
   "@type": "Person",
   "name": "Firas Mostafa",
   "url": "https://firas-mostafa.github.io/portfolio/",
-  "image": "https://firas-mostafa.github.io/portfolio/images/ursa_logo.png",
+  "image": "https://firas-mostafa.github.io/portfolio/images/website_logo.png",
   "jobTitle": "Full-Stack & AI Engineer",
   "description": "Full-Stack & AI Engineer who builds Flutter apps, Django REST APIs, and the machine-learning and LLM/RAG systems that power them.",
   "sameAs": [
