@@ -47,6 +47,7 @@ class ProjectSection extends StatelessComponent {
           
           // Media column (phone frame with Carousel or Video)
           div(classes: 'project-media', [
+            div(classes: 'phone-float', [
             div(classes: 'phone-frame', [
               if (project.isVideo)
                 video(
@@ -68,6 +69,9 @@ class ProjectSection extends StatelessComponent {
                 img(classes: 'phone-media image-fit', src: project.media, alt: '${project.name} preview')
               else
                 div(classes: 'phone-placeholder', [Component.text(project.name)])
+            ]),
+              // Soft ground shadow that shrinks as the phone floats up.
+              div(classes: 'phone-shadow', []),
             ]),
           ]),
         ]),
@@ -244,17 +248,66 @@ class ProjectSection extends StatelessComponent {
           raw: {
             'max-width': '100%',
             'border-radius': '38px',
-            'transition': 'all .4s ease',
+            // Transform is driven by the JS tilt (rAF + lerp); only animate
+            // the hover glow here so the two don't fight.
+            'transition': 'border-color .4s ease, box-shadow .4s ease',
             'box-shadow': '0 20px 50px rgba(0,0,0,0.6)',
             'position': 'relative',
             'overflow': 'hidden',
+            'transform-style': 'preserve-3d',
           },
         ),
-        
+
         css('.phone-frame:hover').styles(
           border: Border.all(color: Colors.white, width: 2.px, style: BorderStyle.solid),
-          raw: {'transform': 'scale(1.02)'},
         ),
+
+        // Floating wrapper carries the idle float; perspective enables the
+        // child frame's 3D tilt. Shadow counter-animates to stay grounded.
+        css('.project-media').styles(
+          raw: {
+            'position': 'relative',
+            'display': 'flex',
+            'align-items': 'center',
+            'justify-content': 'center',
+          },
+        ),
+        css('.phone-float').styles(
+          raw: {
+            'position': 'relative',
+            'display': 'inline-block',
+            'z-index': '1',
+            'perspective': '1200px',
+            'will-change': 'transform',
+            'animation': 'phone-float 6s ease-in-out infinite',
+          },
+        ),
+        css('.phone-shadow').styles(
+          raw: {
+            'position': 'absolute',
+            'bottom': '-30px',
+            'left': '50%',
+            'width': '62%',
+            'height': '28px',
+            'background': 'radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, transparent 72%)',
+            'filter': 'blur(7px)',
+            'opacity': '0.5',
+            'pointer-events': 'none',
+            'z-index': '-1',
+            'transform': 'translateX(-50%) scale(1)',
+            'animation': 'phone-shadow 6s ease-in-out infinite',
+          },
+        ),
+        css.keyframes('phone-float', {
+          '0%': const Styles(raw: {'transform': 'translateY(0)'}),
+          '50%': const Styles(raw: {'transform': 'translateY(-12px)'}),
+          '100%': const Styles(raw: {'transform': 'translateY(0)'}),
+        }),
+        css.keyframes('phone-shadow', {
+          '0%': const Styles(raw: {'transform': 'translateX(-50%) translateY(0) scale(1)', 'opacity': '0.5'}),
+          '50%': const Styles(raw: {'transform': 'translateX(-50%) translateY(12px) scale(0.88)', 'opacity': '0.32'}),
+          '100%': const Styles(raw: {'transform': 'translateX(-50%) translateY(0) scale(1)', 'opacity': '0.5'}),
+        }),
         
         css('.phone-media').styles(
           width: 100.percent,
