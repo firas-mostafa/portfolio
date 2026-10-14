@@ -266,15 +266,17 @@ class ProjectSection extends StatelessComponent {
           raw: {'opacity': '0.7'},
         ),
         
-        // Phone frame - responsive mobile default
+        // Phone frame - responsive mobile default.
+        // The frame takes the media's aspect ratio (--media-ratio) so the
+        // content fills it edge-to-edge with no black letterboxing.
         css('.phone-frame').styles(
           width: 295.px,
-          height: 620.px,
           padding: Padding.all(10.px),
           border: Border.all(color: const Color('rgba(255,255,255,0.25)'), width: 2.px, style: BorderStyle.solid),
           backgroundColor: const Color('#080808'),
           raw: {
             'max-width': '100%',
+            'aspect-ratio': 'var(--media-ratio, 9 / 20)',
             'border-radius': '38px',
             // Transform is driven by the JS tilt (rAF + lerp); only animate
             // the hover glow here so the two don't fight.
@@ -344,11 +346,11 @@ class ProjectSection extends StatelessComponent {
         ),
         
         css('.video-fit').styles(
-          raw: {'object-fit': 'contain'},
+          raw: {'object-fit': 'cover'},
         ),
-        
+
         css('.image-fit').styles(
-          raw: {'object-fit': 'contain'},
+          raw: {'object-fit': 'cover'},
         ),
         
         // Carousel styling
@@ -371,7 +373,7 @@ class ProjectSection extends StatelessComponent {
           position: Position.absolute(top: Unit.zero, left: Unit.zero),
           opacity: 0,
           raw: {
-            'object-fit': 'contain',
+            'object-fit': 'cover',
             'transition': 'opacity 0.8s ease-in-out',
             'pointer-events': 'none',
           },
@@ -492,9 +494,10 @@ class ProjectSection extends StatelessComponent {
           ),
           
           css('.phone-frame').styles(
-            width: 390.px,
             padding: Padding.all(12.px),
-            raw: {'border-radius': '44px', 'height': 'min(822px, 78vh)'},
+            // Constrain by height so the phone fits short laptops; width is
+            // derived from the media aspect ratio (set on base rule).
+            raw: {'border-radius': '44px', 'width': 'auto', 'height': 'min(760px, 78vh)', 'max-width': '100%'},
           ),
           
           css('.phone-media').styles(
@@ -519,6 +522,7 @@ class ProjectSection extends StatelessComponent {
         // Project 01 – Ursa (Cyan)
         css('#project-01').styles(
           raw: {
+            '--media-ratio': '720 / 1600',
             'background': 'radial-gradient(ellipse 80% 60% at 15% 0%, rgba(0, 210, 255, 0.07) 0%, transparent 65%)',
           },
         ),
@@ -549,6 +553,7 @@ class ProjectSection extends StatelessComponent {
         // Project 02 – TasteCraft AI (Teal)
         css('#project-02').styles(
           raw: {
+            '--media-ratio': '373 / 786',
             'background': 'radial-gradient(ellipse 80% 60% at 85% 0%, rgba(0, 200, 180, 0.07) 0%, transparent 65%)',
           },
         ),
@@ -579,6 +584,7 @@ class ProjectSection extends StatelessComponent {
         // Project 03 – AgriSphere (Emerald)
         css('#project-03').styles(
           raw: {
+            '--media-ratio': '720 / 1600',
             'background': 'radial-gradient(ellipse 80% 60% at 15% 0%, rgba(0, 230, 118, 0.07) 0%, transparent 65%)',
           },
         ),
