@@ -22,6 +22,9 @@ void main() {
 
   // Start automatic image carousels for projects.
   _startCarousels();
+
+  // Setup CV dropdown interactions.
+  _setupCvDropdown();
 }
 
 void _startCarousels() {
@@ -230,3 +233,26 @@ void _startParticles() {
 
   run();
 }
+
+void _setupCvDropdown() {
+  Timer(const Duration(milliseconds: 200), () {
+    final trigger = web.document.querySelector('.cv-dropdown-trigger');
+    final dropdown = web.document.querySelector('.cv-dropdown');
+    if (trigger == null || dropdown == null) return;
+
+    trigger.addEventListener('click', ((web.Event e) {
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+      final isOpen = dropdown.classList.contains('open');
+      trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }).toJS);
+
+    web.document.addEventListener('click', ((web.Event e) {
+      if (dropdown.classList.contains('open')) {
+        dropdown.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    }).toJS);
+  });
+}
+

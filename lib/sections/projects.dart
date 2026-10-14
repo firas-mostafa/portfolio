@@ -24,7 +24,7 @@ class ProjectSection extends StatelessComponent {
             ]),
             if (project.link != null)
               a(href: project.link!, target: Target.blank, classes: 'project-link', [
-                Component.text('View on GitHub →'),
+                Component.text(project.buttonText ?? 'View on GitHub →'),
               ]),
           ]),
           
