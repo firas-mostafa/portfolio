@@ -31,8 +31,16 @@ class ProjectSection extends StatelessComponent {
             if (project.stats.isNotEmpty)
               div(classes: 'project-stats', [
                 for (final s in project.stats)
-                  div(classes: 'stat-tile', [
-                    span(classes: 'stat-value', [Component.text(s.value)]),
+                  div(classes: 'stat', [
+                    div(classes: 'stat-num', [
+                      span(
+                        classes: 'stat-value',
+                        attributes: {'data-target': '${s.value}'},
+                        [Component.text('${s.value}')],
+                      ),
+                      if (s.suffix.isNotEmpty)
+                        span(classes: 'stat-suffix', [Component.text(s.suffix)]),
+                    ]),
                     span(classes: 'stat-label', [Component.text(s.label)]),
                   ]),
               ]),
@@ -177,29 +185,39 @@ class ProjectSection extends StatelessComponent {
           maxWidth: 520.px,
         ),
 
-        // Stat tiles — surface the strongest numbers as scannable metrics.
+        // Stat counters — big accent numbers that count up when scrolled into view.
+        // 2×2 on mobile, a row of four on desktop (see media query below).
         css('.project-stats').styles(
           display: Display.grid,
-          gap: Gap.all(12.px),
+          gap: Gap.all(20.px),
           maxWidth: 520.px,
-          margin: Margin.only(bottom: 24.px),
+          margin: Margin.only(bottom: 28.px),
           raw: {'grid-template-columns': 'repeat(2, 1fr)'},
         ),
-        css('.stat-tile').styles(
+        css('.stat').styles(
           display: Display.flex,
           flexDirection: FlexDirection.column,
-          gap: Gap.all(4.px),
-          padding: Padding.symmetric(horizontal: 16.px, vertical: 14.px),
-          border: Border.all(color: const Color('rgba(255,255,255,0.12)'), width: 1.px, style: BorderStyle.solid),
-          backgroundColor: const Color('rgba(255,255,255,0.03)'),
-          raw: {'border-radius': '10px'},
+          gap: Gap.all(6.px),
         ),
-        css('.stat-value').styles(
-          fontFamily: const FontFamily.list([FontFamily('Montserrat'), FontFamilies.sansSerif]),
-          fontWeight: FontWeight.w800,
-          fontSize: 28.px,
-          lineHeight: 1.em,
+        css('.stat-num').styles(
+          display: Display.flex,
+          alignItems: AlignItems.baseline,
+          raw: {
+            'font-family': "'Montserrat', sans-serif",
+            'font-weight': '900',
+            'line-height': '1',
+            'font-variant-numeric': 'tabular-nums',
+          },
+        ),
+        css('.stat-value, .stat-suffix').styles(
           color: Colors.white,
+          raw: {
+            'font-size': 'clamp(2rem, 5vw, 2.75rem)',
+            'font-variant-numeric': 'tabular-nums',
+          },
+        ),
+        css('.stat-suffix').styles(
+          margin: Margin.only(left: 2.px),
         ),
         css('.stat-label').styles(
           fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
@@ -208,6 +226,16 @@ class ProjectSection extends StatelessComponent {
           textTransform: TextTransform.upperCase,
           color: const Color('rgba(255,255,255,0.6)'),
         ),
+        // Tint the numbers with the project's accent color (Ursa = cyan).
+        css('#project-01 .stat-value, #project-01 .stat-suffix').styles(
+          raw: {'color': 'rgba(0, 210, 255, 0.92)'},
+        ),
+        css.media(MediaQuery.screen(minWidth: 768.px), [
+          css('.project-stats').styles(
+            maxWidth: 560.px,
+            raw: {'grid-template-columns': 'repeat(4, 1fr)'},
+          ),
+        ]),
 
         css('.project-tech').styles(
           display: Display.flex,

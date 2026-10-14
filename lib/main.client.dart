@@ -37,6 +37,65 @@ void main() {
 
   // Cursor-reactive 3D tilt on the project phone frames (pointer devices only).
   _setupPhoneTilt();
+
+  // Count the stat numbers up from 0 when their row first enters view.
+  _setupStatCounters();
+}
+
+void _setupStatCounters() {
+  // Reduced motion: leave the server-rendered final values untouched.
+  if (_prefersReducedMotion()) return;
+  Timer(const Duration(milliseconds: 200), () {
+    final rows = web.document.querySelectorAll('.project-stats');
+    if (rows.length == 0) return;
+
+    void onIntersect(
+        JSArray<web.IntersectionObserverEntry> entries, web.IntersectionObserver obs) {
+      for (final entry in entries.toDart) {
+        if (!entry.isIntersecting) continue;
+        final row = entry.target;
+        obs.unobserve(row); // run only once per row
+        final values = row.querySelectorAll('.stat-value');
+        for (var i = 0; i < values.length; i++) {
+          final el = values.item(i) as web.HTMLElement?;
+          if (el == null) continue;
+          final target = int.tryParse(el.getAttribute('data-target') ?? '') ?? 0;
+          _animateCount(el, target);
+        }
+      }
+    }
+
+    final observer = web.IntersectionObserver(
+      onIntersect.toJS,
+      web.IntersectionObserverInit(threshold: 0.4.toJS),
+    );
+    for (var i = 0; i < rows.length; i++) {
+      final r = rows.item(i) as web.Element?;
+      if (r != null) observer.observe(r);
+    }
+  });
+}
+
+void _animateCount(web.HTMLElement el, int target) {
+  const durationMs = 1600.0;
+  final start = web.window.performance.now();
+  el.textContent = '0';
+
+  late final web.FrameRequestCallback stepJS;
+  void step(double _) {
+    final elapsed = web.window.performance.now() - start;
+    final t = (elapsed / durationMs).clamp(0.0, 1.0);
+    final eased = 1 - pow(1 - t, 3).toDouble(); // ease-out cubic
+    el.textContent = '${(target * eased).round()}';
+    if (t < 1.0) {
+      web.window.requestAnimationFrame(stepJS);
+    } else {
+      el.textContent = '$target';
+    }
+  }
+
+  stepJS = step.toJS;
+  web.window.requestAnimationFrame(stepJS);
 }
 
 class _Tilt {

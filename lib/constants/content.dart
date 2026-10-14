@@ -83,9 +83,10 @@ const technicalStack = <StackItem>[
 ];
 
 class ProjectStat {
-  final String value;
+  final int value;
+  final String suffix;
   final String label;
-  const ProjectStat(this.value, this.label);
+  const ProjectStat(this.value, this.suffix, this.label);
 }
 
 class Project {
@@ -125,10 +126,10 @@ const projects = <Project>[
     tagline: 'AI health companion & smart triage platform — my solo graduation thesis.',
     cardStat: '96% Top-3 diagnostic accuracy',
     stats: [
-      ProjectStat('246K', 'Training records'),
-      ProjectStat('721', 'Conditions covered'),
-      ProjectStat('96%', 'Top-3 accuracy'),
-      ProjectStat('94%', 'Critical-case recall'),
+      ProjectStat(246, 'K', 'training records'),
+      ProjectStat(721, '', 'medical conditions'),
+      ProjectStat(96, '%', 'Top-3 accuracy'),
+      ProjectStat(94, '%', 'critical-case recall'),
     ],
     desc:
         'An AI-driven health companion and smart triage platform. Users describe '
