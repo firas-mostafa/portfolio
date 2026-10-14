@@ -17,14 +17,62 @@ void main() {
 
   runApp(const ClientApp());
 
-  // Start the interactive particle background once the DOM is ready.
-  _startParticles();
+  // Start the interactive particle background once the DOM is ready
+  // (skipped for users who prefer reduced motion).
+  if (!_prefersReducedMotion()) {
+    _startParticles();
+  }
 
   // Start automatic image carousels for projects.
   _startCarousels();
 
   // Setup CV dropdown interactions.
   _setupCvDropdown();
+
+  // Highlight the nav item for the section currently in view.
+  _setupActiveNav();
+}
+
+bool _prefersReducedMotion() {
+  try {
+    return web.window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  } catch (_) {
+    return false;
+  }
+}
+
+void _setupActiveNav() {
+  Timer(const Duration(milliseconds: 200), () {
+    final scroller = web.document.querySelector('.snap-main');
+    if (scroller == null) return;
+    const ids = ['home', 'stack', 'projects', 'contact'];
+
+    void update() {
+      final mid = web.window.innerHeight / 2;
+      var current = ids.first;
+      for (final id in ids) {
+        final el = web.document.getElementById(id);
+        if (el == null) continue;
+        // The furthest-down section whose top has crossed the viewport midline
+        // is the active one (keeps "Work" active across project detail pages).
+        if (el.getBoundingClientRect().top <= mid) current = id;
+      }
+      final items = web.document.querySelectorAll('.nav-item');
+      for (var i = 0; i < items.length; i++) {
+        final item = items.item(i) as web.Element?;
+        if (item == null) continue;
+        if (item.getAttribute('href') == '#$current') {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      }
+    }
+
+    scroller.addEventListener('scroll', ((web.Event _) => update()).toJS);
+    web.window.addEventListener('resize', ((web.Event _) => update()).toJS);
+    update();
+  });
 }
 
 void _startCarousels() {

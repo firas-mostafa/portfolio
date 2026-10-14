@@ -27,6 +27,10 @@ class ContactSection extends StatelessComponent {
             a(href: Profile.linkedin, target: Target.blank, [Component.text('LinkedIn')]),
             a(href: Profile.github, target: Target.blank, [Component.text('GitHub')]),
           ]),
+          div(classes: 'availability', [
+            span(classes: 'availability-dot', []),
+            span(classes: 'availability-text', [Component.text('Available for remote work')]),
+          ]),
           div(classes: 'contact-footer', [
             Component.text('© 2026 Firas Mostafa'),
             br(),
@@ -58,10 +62,10 @@ class ContactSection extends StatelessComponent {
         ),
         css('.contact-eyebrow').styles(
           fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-          fontSize: 9.px,
+          fontSize: 11.px,
           letterSpacing: 3.px,
           textTransform: TextTransform.upperCase,
-          color: const Color('rgba(255,255,255,0.3)'),
+          color: const Color('rgba(255,255,255,0.6)'),
           display: Display.block,
           margin: Margin.only(bottom: 8.px),
         ),
@@ -90,12 +94,42 @@ class ContactSection extends StatelessComponent {
         ),
         css('.contact-socials a:hover').styles(color: Colors.white),
         css('.contact-footer').styles(
-          margin: Margin.only(top: 48.px),
+          margin: Margin.only(top: 24.px),
           fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-          fontSize: 10.px,
+          fontSize: 11.px,
           lineHeight: 1.8.em,
-          color: const Color('rgba(255,255,255,0.25)'),
+          color: const Color('rgba(255,255,255,0.5)'),
         ),
+        // Availability indicator with a gentle pulsing dot.
+        css('.availability').styles(
+          display: Display.flex,
+          alignItems: AlignItems.center,
+          gap: Gap.all(10.px),
+          margin: Margin.only(top: 48.px),
+        ),
+        css('.availability-dot').styles(
+          width: 9.px,
+          height: 9.px,
+          backgroundColor: const Color('#2ecc71'),
+          raw: {
+            'border-radius': '50%',
+            'flex-shrink': '0',
+            'box-shadow': '0 0 0 0 rgba(46, 204, 113, 0.6)',
+            'animation': 'availability-pulse 2.4s ease-out infinite',
+          },
+        ),
+        css('.availability-text').styles(
+          fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+          fontSize: 12.px,
+          letterSpacing: 1.px,
+          textTransform: TextTransform.upperCase,
+          color: const Color('rgba(255,255,255,0.7)'),
+        ),
+        css.keyframes('availability-pulse', {
+          '0%': Styles(raw: {'box-shadow': '0 0 0 0 rgba(46, 204, 113, 0.55)'}),
+          '70%': Styles(raw: {'box-shadow': '0 0 0 10px rgba(46, 204, 113, 0)'}),
+          '100%': Styles(raw: {'box-shadow': '0 0 0 0 rgba(46, 204, 113, 0)'}),
+        }),
         css.media(MediaQuery.screen(minWidth: 768.px), [
           css('.contact-grid').styles(raw: {'grid-template-columns': '1fr 1fr'}),
           css('.contact-right').styles(

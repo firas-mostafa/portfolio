@@ -82,10 +82,19 @@ const technicalStack = <StackItem>[
   ),
 ];
 
+class ProjectStat {
+  final String value;
+  final String label;
+  const ProjectStat(this.value, this.label);
+}
+
 class Project {
   final String index;
   final String name;
   final String desc;
+  final String tagline; // one concise line for the overview card
+  final String? cardStat; // headline number shown on the overview card
+  final List<ProjectStat> stats; // stat tiles shown in the detail section
   final List<String> tech;
   final String? link;
   final String? buttonText;
@@ -97,6 +106,9 @@ class Project {
     required this.index,
     required this.name,
     required this.desc,
+    required this.tagline,
+    this.cardStat,
+    this.stats = const [],
     required this.tech,
     this.link,
     this.buttonText,
@@ -110,6 +122,14 @@ const projects = <Project>[
   Project(
     index: '01',
     name: 'Ursa',
+    tagline: 'AI health companion & smart triage platform — my solo graduation thesis.',
+    cardStat: '96% Top-3 diagnostic accuracy',
+    stats: [
+      ProjectStat('246K', 'Training records'),
+      ProjectStat('721', 'Conditions covered'),
+      ProjectStat('96%', 'Top-3 accuracy'),
+      ProjectStat('94%', 'Critical-case recall'),
+    ],
     desc:
         'An AI-driven health companion and smart triage platform. Users describe '
         'their symptoms in Arabic or English; the system analyzes them against '
@@ -127,6 +147,8 @@ const projects = <Project>[
   Project(
     index: '02',
     name: 'TasteCraft AI',
+    tagline: 'Full-stack AI cooking & nutrition platform with a voice-enabled chatbot.',
+    cardStat: 'Bilingual Arabic / English (RTL + LTR)',
     desc:
         'A full-stack AI cooking and nutrition platform: recipe discovery, calorie '
         'tracking, meal planning, and a voice-enabled chatbot, with full Arabic and '
@@ -153,6 +175,8 @@ const projects = <Project>[
   Project(
     index: '03',
     name: 'AgriSphere',
+    tagline: 'Smart agriculture app for planting decisions & plant-disease diagnosis.',
+    cardStat: 'Flutter mobile app + ML, built with a team',
     desc:
         'A smart agriculture app that helps farmers decide when to plant and diagnose '
         'plant diseases in the field, using machine-learning models to improve yield '

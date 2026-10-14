@@ -36,7 +36,7 @@ class App extends StatelessComponent {
   @css
   static List<StyleRule> get styles => [
         css.import(
-            'https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700&family=JetBrains+Mono:wght@100;500;900&family=Montserrat:wght@100;600;700;900&display=swap'),
+            'https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=JetBrains+Mono:wght@400&family=Montserrat:wght@700;800;900&display=swap'),
         css('*').styles(boxSizing: BoxSizing.borderBox),
         css('html, body').styles(
           margin: Margin.zero,
@@ -78,16 +78,25 @@ class App extends StatelessComponent {
         css.media(MediaQuery.screen(minWidth: 768.px), [
           css('.snap-main').styles(
             raw: {
-              'scroll-snap-type': 'y mandatory',
+              'scroll-snap-type': 'y proximity',
             },
           ),
           css('section').styles(
             padding: Padding.only(left: 240.px, right: 120.px, top: 80.px, bottom: 80.px),
             raw: {
               'scroll-snap-align': 'start',
-              'scroll-snap-stop': 'always',
             },
           ),
+        ]),
+        // Respect users who prefer reduced motion: disable smooth scroll and
+        // CSS transitions/animations site-wide (JS-driven effects are gated too).
+        css.media(const MediaQuery.raw('(prefers-reduced-motion: reduce)'), [
+          css('html, body, .snap-main').styles(raw: {'scroll-behavior': 'auto'}),
+          css('*').styles(raw: {
+            'transition-duration': '0.001ms !important',
+            'animation-duration': '0.001ms !important',
+            'animation-iteration-count': '1 !important',
+          }),
         ]),
       ];
 }

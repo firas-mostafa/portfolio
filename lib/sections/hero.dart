@@ -62,7 +62,7 @@ class HeroSection extends StatelessComponent {
           fontSize: 11.px,
           letterSpacing: 4.px,
           textTransform: TextTransform.upperCase,
-          color: const Color('rgba(255,255,255,0.4)'),
+          color: const Color('rgba(255,255,255,0.6)'),
           margin: Margin.only(bottom: 24.px),
         ),
         css('.hero-title').styles(
@@ -73,7 +73,7 @@ class HeroSection extends StatelessComponent {
           margin: Margin.zero,
           color: Colors.white,
         ),
-        css('.hero-title .muted').styles(color: const Color('rgba(255,255,255,0.25)')),
+        css('.hero-title .muted').styles(color: const Color('rgba(255,255,255,0.72)')),
         css('.hero-tagline').styles(
           maxWidth: 560.px,
           fontSize: 18.px,
@@ -198,8 +198,8 @@ class HeroSection extends StatelessComponent {
         ),
         css('.cv-item-role').styles(
           fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-          fontSize: 10.px,
-          color: const Color('rgba(255, 255, 255, 0.45)'),
+          fontSize: 11.px,
+          color: const Color('rgba(255, 255, 255, 0.6)'),
           letterSpacing: 1.px,
           textTransform: TextTransform.upperCase,
         ),

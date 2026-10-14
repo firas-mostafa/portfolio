@@ -19,6 +19,14 @@ class ProjectSection extends StatelessComponent {
             span(classes: 'project-index', [Component.text(project.index)]),
             h3(classes: 'project-name', [Component.text(project.name)]),
             p(classes: 'project-desc', [Component.text(project.desc)]),
+            if (project.stats.isNotEmpty)
+              div(classes: 'project-stats', [
+                for (final s in project.stats)
+                  div(classes: 'stat-tile', [
+                    span(classes: 'stat-value', [Component.text(s.value)]),
+                    span(classes: 'stat-label', [Component.text(s.label)]),
+                  ]),
+              ]),
             div(classes: 'project-tech', [
               for (final t in project.tech) span(classes: 'tech-chip', [Component.text(t)]),
             ]),
@@ -34,12 +42,16 @@ class ProjectSection extends StatelessComponent {
               if (project.isVideo)
                 video(
                   classes: 'phone-media video-fit',
-                  src: project.media,
+                  poster: project.media.replaceAll('.mp4', '-poster.jpg'),
+                  preload: Preload.metadata,
                   autoplay: true,
                   loop: true,
                   muted: true,
-                  attributes: {'playsinline': '', 'controls': 'false'},
-                  [],
+                  attributes: {'playsinline': ''},
+                  [
+                    source(src: project.media.replaceAll('.mp4', '.webm'), type: 'video/webm'),
+                    source(src: project.media, type: 'video/mp4'),
+                  ],
                 )
               else if (hasGallery)
                 _buildGalleryCarousel(project)
@@ -129,7 +141,7 @@ class ProjectSection extends StatelessComponent {
         css('.project-index').styles(
           fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
           fontSize: 14.px,
-          color: const Color('rgba(255,255,255,0.4)'),
+          color: const Color('rgba(255,255,255,0.6)'),
           display: Display.block,
           margin: Margin.only(bottom: 12.px),
         ),
@@ -147,11 +159,43 @@ class ProjectSection extends StatelessComponent {
           fontSize: 15.px,
           fontWeight: FontWeight.w300,
           lineHeight: 1.6.em,
-          color: const Color('rgba(255,255,255,0.6)'),
+          color: const Color('rgba(255,255,255,0.65)'),
           margin: Margin.only(top: 16.px, bottom: 20.px),
           maxWidth: 520.px,
         ),
-        
+
+        // Stat tiles — surface the strongest numbers as scannable metrics.
+        css('.project-stats').styles(
+          display: Display.grid,
+          gap: Gap.all(12.px),
+          maxWidth: 520.px,
+          margin: Margin.only(bottom: 24.px),
+          raw: {'grid-template-columns': 'repeat(2, 1fr)'},
+        ),
+        css('.stat-tile').styles(
+          display: Display.flex,
+          flexDirection: FlexDirection.column,
+          gap: Gap.all(4.px),
+          padding: Padding.symmetric(horizontal: 16.px, vertical: 14.px),
+          border: Border.all(color: const Color('rgba(255,255,255,0.12)'), width: 1.px, style: BorderStyle.solid),
+          backgroundColor: const Color('rgba(255,255,255,0.03)'),
+          raw: {'border-radius': '10px'},
+        ),
+        css('.stat-value').styles(
+          fontFamily: const FontFamily.list([FontFamily('Montserrat'), FontFamilies.sansSerif]),
+          fontWeight: FontWeight.w800,
+          fontSize: 28.px,
+          lineHeight: 1.em,
+          color: Colors.white,
+        ),
+        css('.stat-label').styles(
+          fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+          fontSize: 11.px,
+          letterSpacing: 1.px,
+          textTransform: TextTransform.upperCase,
+          color: const Color('rgba(255,255,255,0.6)'),
+        ),
+
         css('.project-tech').styles(
           display: Display.flex,
           flexWrap: FlexWrap.wrap,
@@ -359,9 +403,8 @@ class ProjectSection extends StatelessComponent {
           
           css('.phone-frame').styles(
             width: 390.px,
-            height: 822.px,
             padding: Padding.all(12.px),
-            raw: {'border-radius': '44px'},
+            raw: {'border-radius': '44px', 'height': 'min(822px, 78vh)'},
           ),
           
           css('.phone-media').styles(

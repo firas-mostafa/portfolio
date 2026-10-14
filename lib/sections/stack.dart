@@ -51,10 +51,10 @@ class StackSection extends StatelessComponent {
         ),
         css('.section-label').styles(
           fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-          fontSize: 10.px,
+          fontSize: 11.px,
           letterSpacing: 5.px,
           textTransform: TextTransform.upperCase,
-          color: const Color('rgba(255,255,255,0.4)'),
+          color: const Color('rgba(255,255,255,0.6)'),
           display: Display.block,
         ),
         css('.section-title').styles(
@@ -64,7 +64,7 @@ class StackSection extends StatelessComponent {
           letterSpacing: (-2).px,
           textTransform: TextTransform.upperCase,
           margin: Margin.zero,
-          color: const Color('rgba(255,255,255,0.3)'),
+          color: const Color('rgba(255,255,255,0.6)'),
         ),
         css('.section-title strong').styles(color: Colors.white, fontWeight: FontWeight.w900),
         css('.stack-grid').styles(

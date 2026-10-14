@@ -23,19 +23,19 @@ class ProjectsOverviewSection extends StatelessComponent {
             div(classes: 'project-card-preview', [
               // Logo
               div(classes: 'project-icon', [
-                img(src: 'images/${p.index == '01' ? 'ursa_logo.png' : p.index == '02' ? 'test_logo.png' : 'ag_logo.png'}', alt: '${p.name} Logo'),
+                img(src: 'images/${p.index == '01' ? 'ursa_logo.png' : p.index == '02' ? 'tastecraft_logo.png' : 'ag_logo.png'}', alt: '${p.name} Logo'),
               ]),
-              
+
               // Project name
               h3(classes: 'project-card-name', [Component.text(p.name)]),
-              
-              // Description (truncated)
-              div(classes: 'project-card-desc', [
-                Component.text(
-                  p.desc.length > 120 ? '${p.desc.substring(0, 120)}...' : p.desc,
-                ),
-              ]),
-              
+
+              // Concise one-line summary (no mid-word truncation)
+              div(classes: 'project-card-desc', [Component.text(p.tagline)]),
+
+              // Headline stat
+              if (p.cardStat != null)
+                div(classes: 'project-card-stat', [Component.text(p.cardStat!)]),
+
               // Tech tags (4 max)
               div(classes: 'project-card-tech', [
                 for (final t in p.tech.take(4))
@@ -75,14 +75,14 @@ class ProjectsOverviewSection extends StatelessComponent {
         
         css('.section-label').styles(
           fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-          fontSize: 10.px,
+          fontSize: 11.px,
           letterSpacing: 5.px,
           textTransform: TextTransform.upperCase,
-          color: const Color('rgba(255,255,255,0.4)'),
+          color: const Color('rgba(255,255,255,0.6)'),
           display: Display.block,
           margin: Margin.only(bottom: 12.px),
         ),
-        
+
         css('.section-title').styles(
           fontFamily: const FontFamily.list([FontFamily('Montserrat'), FontFamilies.sansSerif]),
           fontWeight: FontWeight.w700,
@@ -90,7 +90,7 @@ class ProjectsOverviewSection extends StatelessComponent {
           letterSpacing: (-2).px,
           textTransform: TextTransform.upperCase,
           margin: Margin.zero,
-          color: const Color('rgba(255,255,255,0.3)'),
+          color: const Color('rgba(255,255,255,0.6)'),
         ),
         
         css('.section-title strong').styles(
@@ -281,23 +281,33 @@ class ProjectsOverviewSection extends StatelessComponent {
           fontSize: 14.px,
           fontWeight: FontWeight.w300,
           lineHeight: 1.6.em,
-          color: const Color('rgba(255,255,255,0.6)'),
+          color: const Color('rgba(255,255,255,0.72)'),
+          margin: Margin.only(bottom: 12.px),
+        ),
+
+        css('.project-card-stat').styles(
+          fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+          fontSize: 13.px,
+          fontWeight: FontWeight.w700,
+          lineHeight: 1.4.em,
+          color: Colors.white,
           margin: Margin.only(bottom: 20.px),
         ),
-        
+
         css('.project-card-tech').styles(
           display: Display.flex,
           flexWrap: FlexWrap.wrap,
           gap: Gap.all(8.px),
+          raw: {'margin-top': 'auto'},
         ),
-        
+
         css('.tech-tag').styles(
           fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-          fontSize: 10.px,
+          fontSize: 11.px,
           padding: Padding.symmetric(horizontal: 10.px, vertical: 5.px),
           backgroundColor: const Color('rgba(255,255,255,0.05)'),
           border: Border.all(color: const Color('rgba(255,255,255,0.15)'), width: 1.px, style: BorderStyle.solid),
-          color: const Color('rgba(255,255,255,0.7)'),
+          color: const Color('rgba(255,255,255,0.75)'),
           raw: {'border-radius': '6px'},
         ),
         

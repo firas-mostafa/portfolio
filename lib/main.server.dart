@@ -14,15 +14,15 @@ void main() {
 
   runApp(Document(
     title:
-        'Firas Mostafa | Cross-Platform Mobile & Backend Software Engineer | Flutter & Django',
+        'Firas Mostafa | Full-Stack & AI Engineer | Flutter, Django & LLMs',
     meta: {
       'viewport': 'width=device-width, initial-scale=1.0',
       'title':
-          'Firas Mostafa | Cross-Platform Mobile & Backend Software Engineer | Flutter & Django',
+          'Firas Mostafa | Full-Stack & AI Engineer | Flutter, Django & LLMs',
       'description':
-          'Portfolio of Firas Mostafa, a Cross-Platform Mobile & Backend Software Engineer specializing in Flutter, Dart, Django, REST APIs, Python, Clean Architecture, and AI/RAG pipelines.',
+          'Portfolio of Firas Mostafa, a Full-Stack & AI Engineer who builds Flutter apps, Django REST APIs, and the machine-learning and LLM/RAG systems that power them.',
       'keywords':
-          'Firas Mostafa, Flutter Developer, Software Engineer Portfolio, Django Developer, Cross-Platform Mobile Developer, Backend Software Engineer, Dart, Python, REST APIs, AI/RAG Pipelines, Clean Architecture',
+          'Firas Mostafa, Full-Stack Engineer, AI Engineer, Flutter Developer, Django Developer, Machine Learning, LLM, RAG Pipelines, Dart, Python, REST APIs, Clean Architecture',
       'author': 'Firas Mostafa',
       'robots': 'index, follow',
       'google-site-verification':
@@ -49,14 +49,14 @@ void main() {
         attributes: {
           'property': 'og:title',
           'content':
-              'Firas Mostafa | Cross-Platform Mobile & Backend Software Engineer',
+              'Firas Mostafa | Full-Stack & AI Engineer',
         },
       ),
       meta(
         attributes: {
           'property': 'og:description',
           'content':
-              'Explore software engineering projects in Flutter, Dart, Django, REST APIs, AI/RAG pipelines, and Clean Architecture by Firas Mostafa.',
+              'Explore Flutter apps, Django REST APIs, and the machine-learning and LLM/RAG systems behind them, built by Firas Mostafa.',
         },
       ),
       meta(
@@ -70,7 +70,7 @@ void main() {
         attributes: {
           'property': 'og:image:alt',
           'content':
-              'Firas Mostafa - Cross-Platform Mobile & Backend Software Engineer',
+              'Firas Mostafa - Full-Stack & AI Engineer',
         },
       ),
       meta(attributes: {'property': 'og:locale', 'content': 'en_US'}),
@@ -87,14 +87,14 @@ void main() {
         attributes: {
           'name': 'twitter:title',
           'content':
-              'Firas Mostafa | Cross-Platform Mobile & Backend Software Engineer',
+              'Firas Mostafa | Full-Stack & AI Engineer',
         },
       ),
       meta(
         attributes: {
           'name': 'twitter:description',
           'content':
-              'Cross-Platform Mobile & Backend Software Engineer specializing in Flutter, Dart, Django, REST APIs, Python, and AI/RAG Pipelines.',
+              'Full-Stack & AI Engineer building Flutter apps, Django REST APIs, and the ML/LLM systems that power them.',
         },
       ),
       meta(
@@ -108,7 +108,7 @@ void main() {
         attributes: {
           'name': 'twitter:image:alt',
           'content':
-              'Firas Mostafa - Cross-Platform Mobile & Backend Software Engineer',
+              'Firas Mostafa - Full-Stack & AI Engineer',
         },
       ),
 
@@ -122,12 +122,7 @@ void main() {
       link(
         rel: 'stylesheet',
         href:
-            'https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700&family=JetBrains+Mono:wght@100;500;900&family=Montserrat:wght@100;600;700;900&display=swap',
-      ),
-      link(
-        rel: 'stylesheet',
-        href:
-            'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap',
+            'https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=JetBrains+Mono:wght@400&family=Montserrat:wght@700;800;900&display=swap',
       ),
 
       // Structured Data (JSON-LD)
@@ -140,8 +135,8 @@ void main() {
   "name": "Firas Mostafa",
   "url": "https://firas-mostafa.github.io/portfolio/",
   "image": "https://firas-mostafa.github.io/portfolio/images/ursa_logo.png",
-  "jobTitle": "Cross-Platform Mobile & Backend Software Engineer",
-  "description": "Cross-Platform Mobile & Backend Software Engineer specializing in Flutter, Dart, Django, REST APIs, Python, Clean Architecture, and AI/RAG pipelines.",
+  "jobTitle": "Full-Stack & AI Engineer",
+  "description": "Full-Stack & AI Engineer who builds Flutter apps, Django REST APIs, and the machine-learning and LLM/RAG systems that power them.",
   "sameAs": [
     "https://github.com/firas-mostafa",
     "https://linkedin.com/in/firasmostafa"
