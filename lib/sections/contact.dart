@@ -8,7 +8,7 @@ class ContactSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return section(id: 'contact', classes: 'contact', [
+    return section(id: 'contact', classes: 'contact', attributes: {'data-glow': 'rgba(255,255,255,0.04)'}, [
       span(classes: 'section-label', [Component.text('Connection // 04')]),
       h2(classes: 'section-title', [
         strong([Component.text("LET'S")]),

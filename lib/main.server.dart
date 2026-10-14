@@ -29,6 +29,27 @@ void main() {
           'asaUKWYFhREUpDVzOJJ64IIwFdBzpTL6zVDQRfNoFZU',
     },
     head: [
+      // Ambient glow layer: a registered custom property lets the glow color
+      // transition smoothly as the active project section changes (set from JS).
+      Component.element(tag: 'style', children: [
+        RawText('''
+@property --glow {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(255, 255, 255, 0.04);
+}
+:root { --glow: rgba(255, 255, 255, 0.04); transition: --glow 1s ease; }
+.ambient-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(55% 50% at 50% 32%, var(--glow) 0%, transparent 70%);
+}
+@media (prefers-reduced-motion: reduce) { :root { transition: none; } }
+'''),
+      ]),
+
       link(rel: 'canonical', href: 'https://firas-mostafa.github.io/portfolio/'),
 
       // Open Graph Tags

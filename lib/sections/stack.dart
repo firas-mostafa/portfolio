@@ -8,7 +8,7 @@ class StackSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return section(id: 'stack', classes: 'stack-section', [
+    return section(id: 'stack', classes: 'stack-section', attributes: {'data-glow': 'rgba(255,255,255,0.04)'}, [
       div(classes: 'stack-header', [
         span(classes: 'section-label', [Component.text('Capabilities // 02')]),
         h2(classes: 'section-title stack-title', [

@@ -19,6 +19,9 @@ class App extends StatelessComponent {
     return Component.fragment([
       // Background interactive particle layer (client-only canvas).
       const ParticleBackground(),
+      // Ambient glow that re-tints per active section (color set from JS).
+      // Sits above the opaque particle canvas, below the scrollable content.
+      div(classes: 'ambient-glow', []),
       // Fixed side navigation (desktop).
       const SideNav(),
       // Main scrollable content.

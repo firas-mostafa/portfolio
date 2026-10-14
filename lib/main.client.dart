@@ -31,6 +31,161 @@ void main() {
 
   // Highlight the nav item for the section currently in view.
   _setupActiveNav();
+
+  // Re-tint the ambient glow to match the active section.
+  _setupAmbientGlow();
+
+  // Cursor-reactive 3D tilt on the project phone frames (pointer devices only).
+  _setupPhoneTilt();
+
+  // Count the stat numbers up from 0 when their row first enters view.
+  _setupStatCounters();
+}
+
+void _setupStatCounters() {
+  // Reduced motion: leave the server-rendered final values untouched.
+  if (_prefersReducedMotion()) return;
+  Timer(const Duration(milliseconds: 200), () {
+    final rows = web.document.querySelectorAll('.project-stats');
+    if (rows.length == 0) return;
+
+    void onIntersect(
+        JSArray<web.IntersectionObserverEntry> entries, web.IntersectionObserver obs) {
+      for (final entry in entries.toDart) {
+        if (!entry.isIntersecting) continue;
+        final row = entry.target;
+        obs.unobserve(row); // run only once per row
+        final values = row.querySelectorAll('.stat-value');
+        for (var i = 0; i < values.length; i++) {
+          final el = values.item(i) as web.HTMLElement?;
+          if (el == null) continue;
+          final target = int.tryParse(el.getAttribute('data-target') ?? '') ?? 0;
+          _animateCount(el, target);
+        }
+      }
+    }
+
+    final observer = web.IntersectionObserver(
+      onIntersect.toJS,
+      web.IntersectionObserverInit(threshold: 0.4.toJS),
+    );
+    for (var i = 0; i < rows.length; i++) {
+      final r = rows.item(i) as web.Element?;
+      if (r != null) observer.observe(r);
+    }
+  });
+}
+
+void _animateCount(web.HTMLElement el, int target) {
+  const durationMs = 1600.0;
+  final start = web.window.performance.now();
+  el.textContent = '0';
+
+  late final web.FrameRequestCallback stepJS;
+  void step(double _) {
+    final elapsed = web.window.performance.now() - start;
+    final t = (elapsed / durationMs).clamp(0.0, 1.0);
+    final eased = 1 - pow(1 - t, 3).toDouble(); // ease-out cubic
+    el.textContent = '${(target * eased).round()}';
+    if (t < 1.0) {
+      web.window.requestAnimationFrame(stepJS);
+    } else {
+      el.textContent = '$target';
+    }
+  }
+
+  stepJS = step.toJS;
+  web.window.requestAnimationFrame(stepJS);
+}
+
+class _Tilt {
+  final web.HTMLElement frame;
+  double curX = 0, curY = 0, targetX = 0, targetY = 0;
+  bool hovering = false;
+  _Tilt(this.frame);
+}
+
+void _setupPhoneTilt() {
+  if (_prefersReducedMotion()) return;
+  Timer(const Duration(milliseconds: 200), () {
+    // Tilt only where a real pointer can hover; touch devices keep the float.
+    if (!web.window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      return;
+    }
+
+    final medias = web.document.querySelectorAll('.project-media');
+    final tilts = <_Tilt>[];
+    for (var i = 0; i < medias.length; i++) {
+      final media = medias.item(i) as web.HTMLElement?;
+      if (media == null) continue;
+      final frame = media.querySelector('.phone-frame') as web.HTMLElement?;
+      if (frame == null) continue;
+      final t = _Tilt(frame);
+      tilts.add(t);
+
+      media.addEventListener('mousemove', ((web.MouseEvent e) {
+        final r = media.getBoundingClientRect();
+        final px = (e.clientX - r.left) / r.width - 0.5;
+        final py = (e.clientY - r.top) / r.height - 0.5;
+        t.targetY = px * 16; // rotateY, up to ±8°
+        t.targetX = -py * 16; // rotateX, up to ±8°
+        t.hovering = true;
+      }).toJS);
+
+      media.addEventListener('mouseleave', ((web.Event _) {
+        t.targetX = 0;
+        t.targetY = 0;
+        t.hovering = false;
+      }).toJS);
+    }
+
+    if (tilts.isEmpty) return;
+
+    late final web.FrameRequestCallback loopJS;
+    void loop(double _) {
+      for (final t in tilts) {
+        t.curX += (t.targetX - t.curX) * 0.1;
+        t.curY += (t.targetY - t.curY) * 0.1;
+        final scale = t.hovering ? 1.02 : 1.0;
+        t.frame.style.setProperty(
+          'transform',
+          'rotateX(${t.curX.toStringAsFixed(2)}deg) rotateY(${t.curY.toStringAsFixed(2)}deg) scale($scale)',
+        );
+      }
+      web.window.requestAnimationFrame(loopJS);
+    }
+
+    loopJS = loop.toJS;
+    web.window.requestAnimationFrame(loopJS);
+  });
+}
+
+void _setupAmbientGlow() {
+  Timer(const Duration(milliseconds: 200), () {
+    final sections = web.document.querySelectorAll('[data-glow]');
+    if (sections.length == 0) return;
+    final root = web.document.documentElement as web.HTMLElement?;
+    if (root == null) return;
+
+    void onIntersect(
+        JSArray<web.IntersectionObserverEntry> entries, web.IntersectionObserver observer) {
+      for (final entry in entries.toDart) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          final glow = entry.target.getAttribute('data-glow');
+          if (glow != null) root.style.setProperty('--glow', glow);
+        }
+      }
+    }
+
+    final observer = web.IntersectionObserver(
+      onIntersect.toJS,
+      web.IntersectionObserverInit(threshold: 0.5.toJS),
+    );
+    for (var i = 0; i < sections.length; i++) {
+      final s = sections.item(i) as web.Element?;
+      if (s != null) observer.observe(s);
+    }
+  });
 }
 
 bool _prefersReducedMotion() {
