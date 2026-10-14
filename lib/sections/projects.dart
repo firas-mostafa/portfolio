@@ -12,10 +12,10 @@ class ProjectSection extends StatelessComponent {
     final hasGallery = project.gallery.isNotEmpty;
     // Match the ambient glow to each project's existing accent color.
     final glow = project.index == '01'
-        ? 'rgba(0,210,255,0.18)'
+        ? 'rgba(0,210,255,0.06)'
         : project.index == '02'
-            ? 'rgba(0,200,180,0.18)'
-            : 'rgba(0,230,118,0.18)';
+            ? 'rgba(0,200,180,0.06)'
+            : 'rgba(0,230,118,0.06)';
 
     return section(
         id: 'project-${project.index}',
