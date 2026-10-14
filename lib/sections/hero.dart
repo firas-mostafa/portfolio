@@ -12,9 +12,13 @@ class HeroSection extends StatelessComponent {
       div(classes: 'hero-inner', [
         span(classes: 'eyebrow', [Component.text('${Profile.name} // PORTFOLIO')]),
         h1(classes: 'hero-title', [
-          Component.text(Profile.roleLine1),
+          span(classes: 'reveal-mask', [
+            span(classes: 'reveal-inner', [Component.text(Profile.roleLine1)]),
+          ]),
           br(),
-          span(classes: 'muted', [Component.text(Profile.roleLine2)]),
+          span(classes: 'reveal-mask', [
+            span(classes: 'reveal-inner muted', [Component.text(Profile.roleLine2)]),
+          ]),
         ]),
         p(classes: 'hero-tagline', [Component.text(Profile.tagline)]),
         div(classes: 'hero-cta', [
@@ -74,6 +78,48 @@ class HeroSection extends StatelessComponent {
           color: Colors.white,
         ),
         css('.hero-title .muted').styles(color: const Color('rgba(255,255,255,0.72)')),
+        // ── Title reveal: each line rides up from behind a clipping mask ──
+        css('.reveal-mask').styles(
+          raw: {
+            'display': 'inline-block',
+            'overflow': 'hidden',
+            'vertical-align': 'top',
+            'padding-bottom': '0.1em',
+            'margin-bottom': '-0.1em',
+          },
+        ),
+        css('.reveal-inner').styles(
+          raw: {
+            'display': 'inline-block',
+            'transform': 'translateY(105%)',
+            'will-change': 'transform',
+            'animation': 'hero-reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          },
+        ),
+        css('.hero-title .reveal-mask:nth-of-type(1) .reveal-inner').styles(
+          raw: {'animation-delay': '0.1s'},
+        ),
+        css('.hero-title .reveal-mask:nth-of-type(2) .reveal-inner').styles(
+          raw: {'animation-delay': '0.18s'},
+        ),
+        css.keyframes('hero-reveal', {
+          'from': const Styles(raw: {'transform': 'translateY(105%)'}),
+          'to': const Styles(raw: {'transform': 'translateY(0)'}),
+        }),
+        // ── Supporting content fades up after the title ──
+        css('.hero .eyebrow, .hero .hero-tagline, .hero .hero-cta').styles(
+          raw: {
+            'opacity': '0',
+            'animation': 'hero-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          },
+        ),
+        css('.hero .eyebrow').styles(raw: {'animation-delay': '0.5s'}),
+        css('.hero .hero-tagline').styles(raw: {'animation-delay': '0.65s'}),
+        css('.hero .hero-cta').styles(raw: {'animation-delay': '0.8s'}),
+        css.keyframes('hero-fade-up', {
+          'from': const Styles(raw: {'opacity': '0', 'transform': 'translateY(12px)'}),
+          'to': const Styles(raw: {'opacity': '1', 'transform': 'translateY(0)'}),
+        }),
         css('.hero-tagline').styles(
           maxWidth: 560.px,
           fontSize: 18.px,
