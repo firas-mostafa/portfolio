@@ -31,6 +31,37 @@ void main() {
 
   // Highlight the nav item for the section currently in view.
   _setupActiveNav();
+
+  // Re-tint the ambient glow to match the active section.
+  _setupAmbientGlow();
+}
+
+void _setupAmbientGlow() {
+  Timer(const Duration(milliseconds: 200), () {
+    final sections = web.document.querySelectorAll('[data-glow]');
+    if (sections.length == 0) return;
+    final root = web.document.documentElement as web.HTMLElement?;
+    if (root == null) return;
+
+    void onIntersect(
+        JSArray<web.IntersectionObserverEntry> entries, web.IntersectionObserver observer) {
+      for (final entry in entries.toDart) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          final glow = entry.target.getAttribute('data-glow');
+          if (glow != null) root.style.setProperty('--glow', glow);
+        }
+      }
+    }
+
+    final observer = web.IntersectionObserver(
+      onIntersect.toJS,
+      web.IntersectionObserverInit(threshold: 0.5.toJS),
+    );
+    for (var i = 0; i < sections.length; i++) {
+      final s = sections.item(i) as web.Element?;
+      if (s != null) observer.observe(s);
+    }
+  });
 }
 
 bool _prefersReducedMotion() {

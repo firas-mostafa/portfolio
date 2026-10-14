@@ -8,7 +8,7 @@ class ProjectsOverviewSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return section(id: 'projects', classes: 'projects-overview', [
+    return section(id: 'projects', classes: 'projects-overview', attributes: {'data-glow': 'rgba(255,255,255,0.04)'}, [
       div(classes: 'projects-header', [
         span(classes: 'section-label', [Component.text('Selected Work // 03')]),
         h2(classes: 'section-title', [

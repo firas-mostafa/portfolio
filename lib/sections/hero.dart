@@ -8,7 +8,7 @@ class HeroSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return section(id: 'home', classes: 'hero', [
+    return section(id: 'home', classes: 'hero', attributes: {'data-glow': 'rgba(255,255,255,0.04)'}, [
       div(classes: 'hero-inner', [
         span(classes: 'eyebrow', [Component.text('${Profile.name} // PORTFOLIO')]),
         h1(classes: 'hero-title', [

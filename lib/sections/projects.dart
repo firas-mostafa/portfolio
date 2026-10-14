@@ -10,8 +10,17 @@ class ProjectSection extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     final hasGallery = project.gallery.isNotEmpty;
+    // Match the ambient glow to each project's existing accent color.
+    final glow = project.index == '01'
+        ? 'rgba(0,210,255,0.18)'
+        : project.index == '02'
+            ? 'rgba(0,200,180,0.18)'
+            : 'rgba(0,230,118,0.18)';
 
-    return section(id: 'project-${project.index}', classes: 'project-section', [
+    return section(
+        id: 'project-${project.index}',
+        classes: 'project-section',
+        attributes: {'data-glow': glow}, [
       div(classes: 'project-card', [
         div(classes: 'project-row', [
           // Text column
