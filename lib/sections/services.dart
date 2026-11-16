@@ -62,7 +62,6 @@ class ServicesSection extends StatelessComponent {
                 muted: true,
                 attributes: {'playsinline': '', 'data-index': '$i'},
                 [
-                  source(src: 'videos/services/${services[i].slug}.webm', type: 'video/webm'),
                   source(src: 'videos/services/${services[i].slug}.mp4', type: 'video/mp4'),
                 ],
               ),
