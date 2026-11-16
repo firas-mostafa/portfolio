@@ -12,6 +12,7 @@ import 'package:portfolio/sections/hero.dart' as _hero;
 import 'package:portfolio/sections/projects.dart' as _projects;
 import 'package:portfolio/sections/projects_overview.dart'
     as _projects_overview;
+import 'package:portfolio/sections/services.dart' as _services;
 import 'package:portfolio/sections/stack.dart' as _stack;
 import 'package:portfolio/app.dart' as _app;
 
@@ -41,6 +42,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._hero.HeroSection.styles,
     ..._projects.ProjectSection.styles,
     ..._projects_overview.ProjectsOverviewSection.styles,
+    ..._services.ServicesSection.styles,
     ..._stack.StackSection.styles,
   ],
 );

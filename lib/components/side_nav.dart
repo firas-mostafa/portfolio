@@ -7,6 +7,7 @@ class SideNav extends StatelessComponent {
 
   static const _items = [
     ('home', 'Home'),
+    ('services', 'Services'),
     ('stack', 'Stack'),
     ('projects', 'Work'),
     ('contact', 'Contact'),
@@ -32,12 +33,13 @@ class SideNav extends StatelessComponent {
           flexDirection: FlexDirection.row,
           justifyContent: JustifyContent.center,
           alignItems: AlignItems.center,
-          gap: Gap.all(6.px),
+          gap: Gap.all(2.px),
           zIndex: ZIndex(50),
           raw: {
             'width': 'fit-content',
+            'max-width': 'calc(100vw - 24px)',
             'margin': '0 auto',
-            'padding': '8px 10px',
+            'padding': '7px 8px',
             'background': 'rgba(18, 18, 18, 0.7)',
             'border': '1px solid rgba(255, 255, 255, 0.1)',
             'border-radius': '999px',
@@ -51,7 +53,7 @@ class SideNav extends StatelessComponent {
           alignItems: AlignItems.center,
           gap: Gap.all(12.px),
           cursor: Cursor.pointer,
-          raw: {'padding': '8px 12px', 'border-radius': '999px'},
+          raw: {'padding': '7px 9px', 'border-radius': '999px'},
         ),
         // The expanding line is a desktop affordance only.
         css('.nav-line').styles(
@@ -63,11 +65,11 @@ class SideNav extends StatelessComponent {
         ),
         css('.nav-label').styles(
           fontFamily: const FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-          fontSize: 11.px,
-          letterSpacing: 2.px,
+          fontSize: 10.px,
+          letterSpacing: 1.px,
           textTransform: TextTransform.upperCase,
           color: const Color('rgba(255,255,255,0.55)'),
-          raw: {'transition': 'color .3s'},
+          raw: {'white-space': 'nowrap', 'transition': 'color .3s'},
         ),
         css('.nav-item:hover .nav-label, .nav-item.active .nav-label').styles(color: Colors.white),
         // Active pill highlight on mobile bar.
@@ -100,7 +102,11 @@ class SideNav extends StatelessComponent {
             width: 48.px,
             backgroundColor: Colors.white,
           ),
-          css('.nav-label').styles(color: const Color('rgba(255,255,255,0.4)')),
+          css('.nav-label').styles(
+            fontSize: 11.px,
+            letterSpacing: 2.px,
+            color: const Color('rgba(255,255,255,0.4)'),
+          ),
         ]),
       ];
 }

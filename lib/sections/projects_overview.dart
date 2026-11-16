@@ -10,7 +10,7 @@ class ProjectsOverviewSection extends StatelessComponent {
   Component build(BuildContext context) {
     return section(id: 'projects', classes: 'projects-overview', attributes: {'data-glow': 'rgba(255,255,255,0.04)'}, [
       div(classes: 'projects-header', [
-        span(classes: 'section-label', [Component.text('Selected Work // 03')]),
+        span(classes: 'section-label', [Component.text('Selected Work // 04')]),
         h2(classes: 'section-title', [
           strong([Component.text('SELECTED')]),
           Component.text(' WORKS'),

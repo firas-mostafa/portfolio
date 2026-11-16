@@ -40,6 +40,114 @@ void main() {
 
   // Count the stat numbers up from 0 when their row first enters view.
   _setupStatCounters();
+
+  // Tabbed service explainer videos.
+  _setupServiceTabs();
+}
+
+// "What I Offer": one <video> per service, only the active one ever plays.
+// Playback is tied to the section being on screen, and finishing a clip
+// advances to the next service so the five play as a tour.
+void _setupServiceTabs() {
+  Timer(const Duration(milliseconds: 200), () {
+    final sectionEl = web.document.getElementById('services');
+    if (sectionEl == null) return;
+
+    final tabNodes = sectionEl.querySelectorAll('.service-item');
+    final videoNodes = sectionEl.querySelectorAll('.service-video');
+    if (tabNodes.length == 0 || videoNodes.length == 0) return;
+
+    final tabs = <web.HTMLElement>[];
+    for (var i = 0; i < tabNodes.length; i++) {
+      final t = tabNodes.item(i) as web.HTMLElement?;
+      if (t != null) tabs.add(t);
+    }
+    final videos = <web.HTMLVideoElement>[];
+    for (var i = 0; i < videoNodes.length; i++) {
+      final v = videoNodes.item(i) as web.HTMLVideoElement?;
+      if (v != null) videos.add(v);
+    }
+    if (tabs.length != videos.length) return;
+
+    final soundBtn = sectionEl.querySelector('.player-sound') as web.HTMLElement?;
+    final soundText = sectionEl.querySelector('.sound-text');
+
+    var current = 0;
+    var muted = true;
+    var inView = false;
+
+    void play(int i) {
+      // play() rejects when the tab is backgrounded or autoplay is blocked;
+      // the poster stays up, so there is nothing to recover from.
+      videos[i].play().toDart.catchError((Object _) => null);
+    }
+
+    void select(int next) {
+      if (next < 0 || next >= videos.length) return;
+      if (next != current) {
+        videos[current].pause();
+        videos[current].currentTime = 0;
+        videos[current].classList.remove('active');
+        tabs[current].classList.remove('active');
+        tabs[current].setAttribute('aria-selected', 'false');
+        tabs[current].style.setProperty('--progress', '0');
+        current = next;
+        videos[current].classList.add('active');
+        tabs[current].classList.add('active');
+        tabs[current].setAttribute('aria-selected', 'true');
+      }
+      videos[current].muted = muted;
+      if (inView) play(current);
+    }
+
+    for (var i = 0; i < tabs.length; i++) {
+      final index = i;
+      tabs[i].addEventListener('click', ((web.Event _) => select(index)).toJS);
+    }
+
+    for (var i = 0; i < videos.length; i++) {
+      final index = i;
+      videos[i].addEventListener('timeupdate', ((web.Event _) {
+        if (index != current) return;
+        final d = videos[index].duration;
+        if (d.isNaN || d <= 0) return;
+        tabs[index].style.setProperty(
+            '--progress', (videos[index].currentTime / d).clamp(0.0, 1.0).toStringAsFixed(4));
+      }).toJS);
+      // Walk the tour; wrap back to the first clip at the end.
+      videos[i].addEventListener('ended', ((web.Event _) {
+        if (index != current) return;
+        select((index + 1) % videos.length);
+      }).toJS);
+    }
+
+    soundBtn?.addEventListener('click', ((web.Event _) {
+      muted = !muted;
+      videos[current].muted = muted;
+      soundText?.textContent = muted ? 'Sound off' : 'Sound on';
+      soundBtn.classList.toggle('on', !muted);
+      soundBtn.setAttribute('aria-label', muted ? 'Unmute video' : 'Mute video');
+      if (inView) play(current);
+    }).toJS);
+
+    // Only run the clip while the section is actually on screen.
+    void onIntersect(
+        JSArray<web.IntersectionObserverEntry> entries, web.IntersectionObserver _) {
+      for (final entry in entries.toDart) {
+        inView = entry.isIntersecting && entry.intersectionRatio >= 0.35;
+        if (inView) {
+          play(current);
+        } else {
+          videos[current].pause();
+        }
+      }
+    }
+
+    web.IntersectionObserver(
+      onIntersect.toJS,
+      web.IntersectionObserverInit(threshold: 0.35.toJS),
+    ).observe(sectionEl);
+  });
 }
 
 void _setupStatCounters() {
@@ -200,7 +308,7 @@ void _setupActiveNav() {
   Timer(const Duration(milliseconds: 200), () {
     final scroller = web.document.querySelector('.snap-main');
     if (scroller == null) return;
-    const ids = ['home', 'stack', 'projects', 'contact'];
+    const ids = ['home', 'services', 'stack', 'projects', 'contact'];
 
     void update() {
       final mid = web.window.innerHeight / 2;

@@ -9,7 +9,7 @@ class ContactSection extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return section(id: 'contact', classes: 'contact', attributes: {'data-glow': 'rgba(255,255,255,0.04)'}, [
-      span(classes: 'section-label', [Component.text('Connection // 04')]),
+      span(classes: 'section-label', [Component.text('Connection // 05')]),
       h2(classes: 'section-title', [
         strong([Component.text("LET'S")]),
         Component.text(' CONNECT'),
@@ -72,10 +72,17 @@ class ContactSection extends StatelessComponent {
         css('.contact-email').styles(
           fontFamily: const FontFamily.list([FontFamily('Montserrat'), FontFamilies.sansSerif]),
           fontWeight: FontWeight.w700,
-          fontSize: 28.px,
+          fontSize: 18.px,
           color: Colors.white,
           border: Border.only(bottom: BorderSide(color: const Color('rgba(255,255,255,0.1)'), width: 1.px, style: BorderStyle.solid)),
-          raw: {'padding-bottom': '8px', 'display': 'inline-block', 'transition': 'border-color .4s'},
+          raw: {
+            'padding-bottom': '8px',
+            'display': 'inline-block',
+            'transition': 'border-color .4s',
+            'word-break': 'break-all',
+            'overflow-wrap': 'break-word',
+            'max-width': '100%',
+          },
         ),
         css('.contact-email:hover').styles(
           border: Border.only(bottom: BorderSide(color: Colors.white, width: 1.px, style: BorderStyle.solid)),
@@ -130,6 +137,9 @@ class ContactSection extends StatelessComponent {
           '70%': Styles(raw: {'box-shadow': '0 0 0 10px rgba(46, 204, 113, 0)'}),
           '100%': Styles(raw: {'box-shadow': '0 0 0 0 rgba(46, 204, 113, 0)'}),
         }),
+        css.media(MediaQuery.screen(minWidth: 480.px), [
+          css('.contact-email').styles(fontSize: 22.px),
+        ]),
         css.media(MediaQuery.screen(minWidth: 768.px), [
           css('.contact-grid').styles(raw: {'grid-template-columns': '1fr 1fr'}),
           css('.contact-right').styles(
@@ -138,6 +148,7 @@ class ContactSection extends StatelessComponent {
             alignItems: AlignItems.end,
             justifyContent: JustifyContent.spaceBetween,
           ),
+          css('.contact-email').styles(fontSize: 28.px),
         ]),
       ];
 }

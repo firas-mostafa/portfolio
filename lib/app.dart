@@ -2,6 +2,7 @@ import 'package:jaspr/jaspr.dart';
 import 'package:jaspr/dom.dart';
 
 import 'sections/hero.dart';
+import 'sections/services.dart';
 import 'sections/stack.dart';
 import 'sections/projects_overview.dart';
 import 'sections/projects.dart';
@@ -27,6 +28,7 @@ class App extends StatelessComponent {
       // Main scrollable content.
       main_(id: 'top', classes: 'snap-main', [
         const HeroSection(),
+        const ServicesSection(),
         const StackSection(),
         const ProjectsOverviewSection(),
         for (final p in projects) ProjectSection(project: p),

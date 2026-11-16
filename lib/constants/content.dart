@@ -53,6 +53,71 @@ class Profile {
   ];
 }
 
+// Services shown in the "What I Offer" section, each with an explainer video.
+// `slug` maps to web/videos/services/<slug>.{mp4,webm} and <slug>-poster.jpg.
+class Service {
+  final String index;
+  final String title;
+  final String tagline;
+  final String desc;
+  final String slug;
+  const Service({
+    required this.index,
+    required this.title,
+    required this.tagline,
+    required this.desc,
+    required this.slug,
+  });
+}
+
+const services = <Service>[
+  Service(
+    index: '01',
+    title: 'Overview',
+    tagline: 'One engineer, the whole stack.',
+    desc:
+        'A 30-second look at how I work: the app your users touch, the API behind '
+        'it, and the models that make it smart — designed and shipped by one person.',
+    slug: '01-overview',
+  ),
+  Service(
+    index: '02',
+    title: 'Mobile App Development',
+    tagline: 'One codebase for Android and iOS, with a native feel.',
+    desc:
+        'Flutter apps built on Clean Architecture and BLoC, wired to REST APIs, '
+        'WebSockets and Firebase — shipped to both stores from a single codebase.',
+    slug: '02-mobile',
+  ),
+  Service(
+    index: '03',
+    title: 'Backend Engineering',
+    tagline: 'Fast, secure APIs that keep your product running.',
+    desc:
+        'Django and DRF on async ASGI, with WebSockets, Celery and Redis for '
+        'background work, PostgreSQL for data, and Docker for repeatable deploys.',
+    slug: '03-backend',
+  ),
+  Service(
+    index: '04',
+    title: 'AI & Machine Learning',
+    tagline: 'Turn your data into decisions.',
+    desc:
+        'PyTorch and gradient-boosting models, plus RAG pipelines with LangChain, '
+        'local LLMs and pgvector search — integrated into the product, not a demo.',
+    slug: '04-ai',
+  ),
+  Service(
+    index: '05',
+    title: 'App Maintenance & Upgrades',
+    tagline: 'Keep your app fast, secure and up to date.',
+    desc:
+        'Taking over an existing codebase: fixing what breaks, paying down tech '
+        'debt, tightening performance, and keeping dependencies and SDKs current.',
+    slug: '05-maintenance',
+  ),
+];
+
 // Technical stack shown in the "Technical Stack" section.
 class StackItem {
   final String index;
