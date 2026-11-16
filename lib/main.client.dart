@@ -72,6 +72,25 @@ void _setupServiceTabs() {
     final soundBtn = sectionEl.querySelector('.player-sound') as web.HTMLElement?;
     final soundText = sectionEl.querySelector('.sound-text');
 
+    // Start fetching the first clip one viewport early, so it is buffered by
+    // the time the section arrives instead of stalling on a still poster.
+    void onApproach(
+        JSArray<web.IntersectionObserverEntry> entries, web.IntersectionObserver obs) {
+      for (final entry in entries.toDart) {
+        if (!entry.isIntersecting) continue;
+        obs.disconnect();
+        final first = videoNodes.item(0) as web.HTMLVideoElement?;
+        if (first == null) return;
+        first.preload = 'auto';
+        first.load();
+      }
+    }
+
+    web.IntersectionObserver(
+      onApproach.toJS,
+      web.IntersectionObserverInit(rootMargin: '100% 0px'),
+    ).observe(sectionEl);
+
     var current = 0;
     var muted = true;
     var inView = false;
