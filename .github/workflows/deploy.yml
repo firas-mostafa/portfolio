@@ -23,7 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Pinned: jaspr_builder needs analyzer ^12, which no build_web_compilers
+      # release supporting Dart >=3.14 accepts. Keep in step with pubspec.lock.
       - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 3.11.3
 
       - name: Install Jaspr CLI
         run: dart pub global activate jaspr_cli
